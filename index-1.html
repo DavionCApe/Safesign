@@ -1,89 +1,291 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SAFEsign – Sign documents on your phone</title>
-<meta name="description" content="SAFEsign is an Android app for signing documents securely.">
-<style>
-:root{--bg:#f3f6f4;--ink:#10231c;--muted:#4b6158;--accent:#0b6b4f;--line:#c9d6cf;--card:#fff}
-@media (prefers-color-scheme:dark){:root{--bg:#0e1a15;--ink:#e8f1ec;--muted:#9bb3a8;--accent:#4fd1a1;--line:#27382f;--card:#14231c}}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Georgia,"Times New Roman",serif}
-a{color:var(--accent)}
-:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.wrap{max-width:880px;margin:0 auto;padding:0 24px}
-header{padding:20px 0;border-bottom:1px solid var(--line)}
-header .wrap{display:flex;justify-content:space-between;align-items:center}
-.logo{font:700 20px/1 system-ui,sans-serif;letter-spacing:.02em}
-.logo b{color:var(--accent)}
-nav a{font:15px system-ui,sans-serif;margin-left:20px;text-decoration:none}
-.hero{padding:72px 0 56px}
-h1{font-size:clamp(38px,7vw,68px);line-height:1.05;margin:0 0 20px;max-width:14em}
-.lead{font-size:20px;color:var(--muted);max-width:34em;margin:0 0 32px}
-.btn{display:inline-block;background:var(--accent);color:var(--bg);font:600 16px system-ui,sans-serif;padding:14px 26px;border-radius:6px;text-decoration:none}
-.sig{margin-top:48px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:20px}
-.sig p{margin:0 0 8px;font:14px system-ui,sans-serif;color:var(--muted)}
-canvas{width:100%;height:150px;display:block;border-bottom:2px solid var(--ink);touch-action:none;cursor:crosshair}
-.sig button{margin-top:12px;font:14px system-ui,sans-serif;background:none;border:1px solid var(--line);color:var(--ink);padding:8px 14px;border-radius:6px;cursor:pointer}
-section{padding:48px 0;border-top:1px solid var(--line)}
-h2{font-size:30px;margin:0 0 20px}
-.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
-.feats h3{font:700 17px system-ui,sans-serif;margin:0 0 6px}
-.feats p{margin:0;color:var(--muted);font-size:16px}
-footer{padding:32px 0;border-top:1px solid var(--line);font:14px system-ui,sans-serif;color:var(--muted)}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSign - Learn & Stay Safe</title>
+    <style>
+        :root {
+            --bg-color: #f7f9fc;
+            --text-color: #2d3748;
+            --primary: #4a90e2;
+            --danger: #e53e3e;
+            --success: #38a169;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 120px; /* Space for fixed bottom SOS button */
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+        }
+
+        /* Sign Learning Grid */
+        .sign-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .sign-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 3px solid transparent;
+        }
+
+        .sign-card:active {
+            transform: scale(0.95);
+            border-color: var(--primary);
+        }
+
+        .sign-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .sign-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Quiz Status Box */
+        .quiz-box {
+            background-color: #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .quiz-prompt {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Fixed Big Child-Friendly SOS Button */
+        .sos-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-color);
+            padding: 15px 0;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+        }
+
+        .sos-button {
+            width: 85%;
+            max-width: 500px;
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 6px 12px rgba(229, 62, 62, 0.4);
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .sos-button:active {
+            transform: scale(0.92);
+            background-color: #c53030;
+            box-shadow: 0 2px 4px rgba(229, 62, 62, 0.4);
+        }
+
+        .sos-subtext {
+            font-size: 0.9rem;
+            display: block;
+            font-weight: normal;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+    </style>
 </head>
 <body>
-<header><div class="wrap">
-  <div class="logo">SAFE<b>sign</b></div>
-  <nav><a href="#features">Features</a><a href="#download">Download</a></nav>
-</div></header>
 
-<main>
-<div class="wrap">
-  <div class="hero">
-    <h1>Sign documents from your phone, safely.</h1>
-    <p class="lead">SAFEsign lets you review, sign, and send documents on Android without printing, scanning, or sharing them with strangers.</p>
-    <a class="btn" href="#download">Download</a>
+    <header>
+        <h1>SafeSign 🌟</h1>
+        <p>Touch a sign to learn!</p>
+    </header>
 
-    <div class="sig">
-      <p>Try it: draw your signature below.</p>
-      <canvas id="pad" aria-label="Signature drawing area"></canvas>
-      <button id="clear" type="button">Clear</button>
+    <div class="container">
+        
+        <div class="section-title">🚦 Learn Safety Signs</div>
+        
+        <div class="sign-grid">
+            <!-- Card 1: Stop -->
+            <div class="sign-card" onclick="speakAndVerify('Stop Sign. Stop immediately and look both ways.', '🛑')">
+                <span class="sign-icon">🛑</span>
+                <span class="sign-name">STOP</span>
+            </div>
+
+            <!-- Card 2: Danger -->
+            <div class="sign-card" onclick="speakAndVerify('Danger. Stay away. High hazard zone.', '⚠️')">
+                <span class="sign-icon">⚠️</span>
+                <span class="sign-name">DANGER</span>
+            </div>
+
+            <!-- Card 3: Crosswalk -->
+            <div class="sign-card" onclick="speakAndVerify('Crosswalk. Walk carefully across the street here.', '🚸')">
+                <span class="sign-icon">🚸</span>
+                <span class="sign-name">CROSSWALK</span>
+            </div>
+
+            <!-- Card 4: Exit -->
+            <div class="sign-card" onclick="speakAndVerify('Safe Exit. Walk this way out of the building safely.', '🚪')">
+                <span class="sign-icon">🚪</span>
+                <span class="sign-name">EXIT</span>
+            </div>
+        </div>
+
+        <div class="section-title">🎮 Safety Game</div>
+        <div class="quiz-box">
+            <div class="quiz-prompt" id="quiz-prompt">Find the DANGER sign! ⚠️</div>
+            <div id="quiz-feedback">Tap the correct icon above!</div>
+        </div>
+
     </div>
-  </div>
 
-  <section id="features">
-    <h2>What it does</h2>
-    <div class="feats">
-      <div><h3>Sign in seconds</h3><p>Draw your signature once and place it on any page.</p></div>
-      <div><h3>Stays on your device</h3><p>Documents are processed on your phone, not uploaded for you to retrieve later.</p></div>
-      <div><h3>Ready to send</h3><p>Export a signed PDF and share it by email or messaging.</p></div>
+    <!-- Fixed position panic layout for quick physical access -->
+    <div class="sos-container">
+        <button class="sos-button" id="sosButton">
+            🚨 HELP ME
+            <div>
+                <span class="sos-subtext">Press and hold if in danger</span>
+            </div>
+        </button>
     </div>
-  </section>
 
-  <section id="download">
-    <h2>Download</h2>
-    <p>SAFEsign for Android is not ready to download yet. Check back soon.</p>
-  </section>
-</div>
-</main>
+    <script>
+        // Target answer for our simple safety game
+        let currentTargetEmoji = '⚠️';
 
-<footer><div class="wrap">© 2026 SAFEsign</div></footer>
+        // 1. Text to Speech & Game Logic
+        function speakAndVerify(text, emoji) {
+            // Text to speech helper for crèche children who cannot read fluently
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9; // Slightly slower for clear comprehension
+                window.speechSynthesis.cancel(); // Clear any ongoing queues
+                window.speechSynthesis.speak(utterance);
+            }
 
-<script>
-(function(){
-  var c=document.getElementById('pad'),x=c.getContext('2d'),d=false;
-  function size(){var r=c.getBoundingClientRect(),k=window.devicePixelRatio||1;c.width=r.width*k;c.height=r.height*k;x.scale(k,k);x.lineWidth=2.2;x.lineCap='round';x.strokeStyle=getComputedStyle(document.body).color}
-  function pt(e){var r=c.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]}
-  c.addEventListener('pointerdown',function(e){d=true;var p=pt(e);x.beginPath();x.moveTo(p[0],p[1]);c.setPointerCapture(e.pointerId)});
-  c.addEventListener('pointermove',function(e){if(!d)return;var p=pt(e);x.lineTo(p[0],p[1]);x.stroke()});
-  ['pointerup','pointercancel'].forEach(function(t){c.addEventListener(t,function(){d=false})});
-  document.getElementById('clear').addEventListener('click',function(){x.clearRect(0,0,c.width,c.height)});
-  size();
-})();
-</script>
+            // Simple match validation
+            const feedbackElement = document.getElementById('quiz-feedback');
+            if (emoji === currentTargetEmoji) {
+                feedbackElement.innerHTML = "<span style='color: var(--success); font-weight: bold;'>🎉 Great Job! That is correct!</span>";
+                // Play success audio cue if desired
+                setTimeout(rotateQuiz, 3000);
+            } else {
+                feedbackElement.innerHTML = "<span style='color: var(--danger);'>Try again! Listen to what it means.</span>";
+            }
+        }
+
+        // Cycle the simple recognition prompt
+        function rotateQuiz() {
+            const prompts = [
+                { text: "Find the STOP sign! 🛑", emoji: '🛑' },
+                { text: "Find the CROSSWALK sign! 🚸", emoji: '🚸' },
+                { text: "Find the EXIT route! 🚪", emoji: '🚪' },
+                { text: "Find the DANGER sign! ⚠️", emoji: '⚠️' }
+            ];
+            const randomPick = prompts[Math.floor(Math.random() * prompts.length)];
+            document.getElementById('quiz-prompt').innerText = randomPick.text;
+            currentTargetEmoji = randomPick.emoji;
+            document.getElementById('quiz-feedback').innerText = "Tap the correct icon above!";
+        }
+
+        // 2. Child-Safe Emergency Alert Hook
+        // Designed with an intentional delay event so accidental taps do not false-alarm teachers/parents
+        const sosButton = document.getElementById('sosButton');
+        let pressTimer;
+
+        sosButton.addEventListener('mousedown', startPress);
+        sosButton.addEventListener('touchstart', startPress);
+        sosButton.addEventListener('mouseup', cancelPress);
+        sosButton.addEventListener('touchend', cancelPress);
+
+        function startPress(e) {
+            e.preventDefault();
+            sosButton.style.backgroundColor = "#9b2c2c";
+            // Must hold down for 1.5 seconds to dispatch alert
+            pressTimer = setTimeout(() => {
+                triggerEmergencyAlert();
+            }, 1500);
+        }
+
+        function cancelPress() {
+            clearTimeout(pressTimer);
+            sosButton.style.backgroundColor = "var(--danger)";
+        }
+
+        function triggerEmergencyAlert() {
+            // Native Android Bridge Hook Interface
+            // When wrapped via a WebView, JavaScript passes execution up to native Java/Kotlin handlers
+            if (window.AndroidInterface && window.AndroidInterface.sendEmergencyAlert) {
+                window.AndroidInterface.sendEmergencyAlert();
+            } else {
+                // Fallback local visual demonstration if run strictly via browser
+                alert("🚨 Emergency SOS Activated! Alerting trusted adults and dispatching location metrics.");
+            }
+        }
+    </script>
 </body>
 </html>
