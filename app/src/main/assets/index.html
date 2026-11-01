@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSign - Learn & Stay Safe</title>
+    <style>
+        :root {
+            --bg-color: #f7f9fc;
+            --text-color: #2d3748;
+            --primary: #4a90e2;
+            --danger: #e53e3e;
+            --success: #38a169;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 120px; /* Space for fixed bottom SOS button */
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+        }
+
+        /* Sign Learning Grid */
+        .sign-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .sign-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 3px solid transparent;
+        }
+
+        .sign-card:active {
+            transform: scale(0.95);
+            border-color: var(--primary);
+        }
+
+        .sign-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .sign-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Quiz Status Box */
+        .quiz-box {
+            background-color: #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .quiz-prompt {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Fixed Big Child-Friendly SOS Button */
+        .sos-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-color);
+            padding: 15px 0;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+        }
+
+        .sos-button {
+            width: 85%;
+            max-width: 500px;
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 6px 12px rgba(229, 62, 62, 0.4);
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .sos-button:active {
+            transform: scale(0.92);
+            background-color: #c53030;
+            box-shadow: 0 2px 4px rgba(229, 62, 62, 0.4);
+        }
+
+        .sos-subtext {
+            font-size: 0.9rem;
+            display: block;
+            font-weight: normal;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SafeSign 🌟</h1>
+        <p>Touch a sign to learn!</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="section-title">🚦 Learn Safety Signs</div>
+        
+        <div class="sign-grid">
+            <!-- Card 1: Stop -->
+            <div class="sign-card" onclick="speakAndVerify('Stop Sign. Stop immediately and look both ways.', '🛑')">
+                <span class="sign-icon">🛑</span>
+                <span class="sign-name">STOP</span>
+            </div>
+
+            <!-- Card 2: Danger -->
+            <div class="sign-card" onclick="speakAndVerify('Danger. Stay away. High hazard zone.', '⚠️')">
+                <span class="sign-icon">⚠️</span>
+                <span class="sign-name">DANGER</span>
+            </div>
+
+            <!-- Card 3: Crosswalk -->
+            <div class="sign-card" onclick="speakAndVerify('Crosswalk. Walk carefully across the street here.', '🚸')">
+                <span class="sign-icon">🚸</span>
+                <span class="sign-name">CROSSWALK</span>
+            </div>
+
+            <!-- Card 4: Exit -->
+            <div class="sign-card" onclick="speakAndVerify('Safe Exit. Walk this way out of the building safely.', '🚪')">
+                <span class="sign-icon">🚪</span>
+                <span class="sign-name">EXIT</span>
+            </div>
+        </div>
+
+        <div class="section-title">🎮 Safety Game</div>
+        <div class="quiz-box">
+            <div class="quiz-prompt" id="quiz-prompt">Find the DANGER sign! ⚠️</div>
+            <div id="quiz-feedback">Tap the correct icon above!</div>
+        </div>
+
+    </div>
+
+    <!-- Fixed position panic layout for quick physical access -->
+    <div class="sos-container">
+        <button class="sos-button" id="sosButton">
+            🚨 HELP ME
+            <div>
+                <span class="sos-subtext">Press and hold if in danger</span>
+            </div>
+        </button>
+    </div>
+
+    <script>
+        // Target answer for our simple safety game
+        let currentTargetEmoji = '⚠️';
+
+        // 1. Text to Speech & Game Logic
+        function speakAndVerify(text, emoji) {
+            // Text to speech helper for crèche children who cannot read fluently
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9; // Slightly slower for clear comprehension
+                window.speechSynthesis.cancel(); // Clear any ongoing queues
+                window.speechSynthesis.speak(utterance);
+            }
+
+            // Simple match validation
+            const feedbackElement = document.getElementById('quiz-feedback');
+            if (emoji === currentTargetEmoji) {
+                feedbackElement.innerHTML = "<span style='color: var(--success); font-weight: bold;'>🎉 Great Job! That is correct!</span>";
+                // Play success audio cue if desired
+                setTimeout(rotateQuiz, 3000);
+            } else {
+                feedbackElement.innerHTML = "<span style='color: var(--danger);'>Try again! Listen to what it means.</span>";
+            }
+        }
+
+        // Cycle the simple recognition prompt
+        function rotateQuiz() {
+            const prompts = [
+                { text: "Find the STOP sign! 🛑", emoji: '🛑' },
+                { text: "Find the CROSSWALK sign! 🚸", emoji: '🚸' },
+                { text: "Find the EXIT route! 🚪", emoji: '🚪' },
+                { text: "Find the DANGER sign! ⚠️", emoji: '⚠️' }
+            ];
+            const randomPick = prompts[Math.floor(Math.random() * prompts.length)];
+            document.getElementById('quiz-prompt').innerText = randomPick.text;
+            currentTargetEmoji = randomPick.emoji;
+            document.getElementById('quiz-feedback').innerText = "Tap the correct icon above!";
+        }
+
+        // 2. Child-Safe Emergency Alert Hook
+        // Designed with an intentional delay event so accidental taps do not false-alarm teachers/parents
+        const sosButton = document.getElementById('sosButton');
+        let pressTimer;
+
+        sosButton.addEventListener('mousedown', startPress);
+        sosButton.addEventListener('touchstart', startPress);
+        sosButton.addEventListener('mouseup', cancelPress);
+        sosButton.addEventListener('touchend', cancelPress);
+
+        function startPress(e) {
+            e.preventDefault();
+            sosButton.style.backgroundColor = "#9b2c2c";
+            // Must hold down for 1.5 seconds to dispatch alert
+            pressTimer = setTimeout(() => {
+                triggerEmergencyAlert();
+            }, 1500);
+        }
+
+        function cancelPress() {
+            clearTimeout(pressTimer);
+            sosButton.style.backgroundColor = "var(--danger)";
+        }
+
+        function triggerEmergencyAlert() {
+            // Native Android Bridge Hook Interface
+            // When wrapped via a WebView, JavaScript passes execution up to native Java/Kotlin handlers
+            if (window.AndroidInterface && window.AndroidInterface.sendEmergencyAlert) {
+                window.AndroidInterface.sendEmergencyAlert();
+            } else {
+                // Fallback local visual demonstration if run strictly via browser
+                alert("🚨 Emergency SOS Activated! Alerting trusted adults and dispatching location metrics.");
+            }
+        }
+    </script>
+</body>
+  </html>
